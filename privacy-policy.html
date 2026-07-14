@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy Policy — LGE PDP QA Extension</title>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    line-height: 1.6;
+    color: #23364d;
+    background: #fff;
+  }
+  h1 {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+  .updated {
+    color: #637083;
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 18px;
+    margin-top: 36px;
+    margin-bottom: 8px;
+    color: #23364d;
+    border-bottom: 1px solid #e9edf2;
+    padding-bottom: 6px;
+  }
+  ul {
+    padding-left: 22px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  code {
+    background: #f5f7f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .note {
+    background: #f5f7f9;
+    border: 1px solid #e9edf2;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #637083;
+    margin-top: 8px;
+  }
+  a {
+    color: #1677ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #14181f; color: #e2e8f0; }
+    h2 { border-bottom-color: #2a3140; }
+    .updated { color: #8b96a8; }
+    code { background: #1f2530; }
+    .note { background: #1f2530; border-color: #2a3140; color: #8b96a8; }
+  }
+</style>
+</head>
+<body>
+
+  <h1>Privacy Policy</h1>
+  <div class="updated">LGE PDP QA Extension &middot; Last updated: July 5, 2026</div>
+
+  <h2>1. What this extension does</h2>
+  <p>
+    LGE PDP QA Extension is a quality-assurance tool for LG.com product detail pages (PDPs).
+    It scans the currently open page for issues with images, videos, CTA links, on-page text,
+    and page/SEO metadata, and displays the results in a side panel.
+  </p>
+
+  <h2>2. Information we collect</h2>
+  <p>When you click &ldquo;Start QA&rdquo; on a page, the extension reads the following from that page:</p>
+  <ul>
+    <li>Image and video URLs, <code>alt</code> text, and file size metadata</li>
+    <li>CTA link URLs and their HTTP response status</li>
+    <li>On-page text matched against predefined patterns (e.g. truncation markers, promotional wording flagged by locale)</li>
+    <li>Page metadata such as Model Code, MSRP, UFN, page title, and meta description</li>
+    <li>An anonymous identifier generated and stored locally in your browser (a random UUID — not your name, email, or account information)</li>
+    <li>Scan timestamp, scan duration, and the viewport mode used for the scan</li>
+  </ul>
+  <p><strong>We do not collect personally identifiable information</strong> such as your name, email address, or login credentials.</p>
+
+  <h2>3. How we use this information</h2>
+  <ul>
+    <li>To display QA scan results to you in the extension's Summary and List views, and in CSV exports you generate</li>
+    <li>To aggregate QA activity for the purpose of improving PDP content quality</li>
+  </ul>
+
+  <h2>4. Where this information is sent</h2>
+  <p>
+    Scan results are sent to a data-collection service operated on Google Cloud Platform
+    (Cloud Run and BigQuery), under LG Electronics' own cloud project. This service is
+    accessed with an API key embedded in the extension and enforces a daily submission
+    cap as an abuse-prevention safeguard.
+  </p>
+  <div class="note">
+    This service is operated by LG Electronics for internal quality-assurance purposes.
+    We do not sell, rent, or share the collected data with third parties, and it is not
+    used for advertising.
+  </div>
+
+  <h2>5. Data retention</h2>
+  <p>
+    Collected data is retained for as long as needed to support PDP quality-assurance
+    activities, after which it is deleted in accordance with LG Electronics' internal
+    data retention policy.
+  </p>
+
+  <h2>6. Third-party sharing</h2>
+  <p>
+    We do not sell, rent, or otherwise share collected data with third parties for
+    marketing or advertising purposes.
+  </p>
+
+  <h2>7. Permissions this extension uses</h2>
+  <ul>
+    <li><strong>Host access to all sites</strong> &mdash; required so the extension can scan LG.com PDPs (including staging domains) and verify the HTTP status of CTA links that point to external, non-LG domains.</li>
+    <li><strong>Debugger</strong> &mdash; used only to accurately emulate PC/Mobile viewport rendering during a scan; not used to monitor browsing activity.</li>
+    <li><strong>Storage / Tabs / Side Panel / Scripting / Active Tab</strong> &mdash; used to run the scan on the active tab and present results in the extension's side panel.</li>
+  </ul>
+
+  <h2>8. Contact</h2>
+  <p>
+    Questions about this extension or how it handles data can be directed to:
+    <br />
+    <a href="mailto:REPLACE_WITH_CONTACT_EMAIL">REPLACE_WITH_CONTACT_EMAIL</a>
+  </p>
+
+</body>
+</html>
