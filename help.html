@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDP QA Extension - Help</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html {
+        background: #e9edf2;
+      }
+
+      body {
+        font-family: Pretendard, 'Segoe UI', sans-serif;
+        background: #f5f7f9;
+        color: #23364d;
+        min-height: 100vh;
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        box-shadow: 0 0 0 1px #d9dfe8;
+      }
+
+      /* ── Header ── */
+      .help-header {
+        background: #fff;
+        border-bottom: 1px solid #d9dfe8;
+        padding: 14px 24px;
+        display: flex; align-items: center; gap: 12px;
+        flex-shrink: 0;
+      }
+      .help-header-logo {
+        width: 26px; height: 26px; background: #a50034; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+      }
+      .help-header-title { font-size: 14px; font-weight: 600; color: #23364d; }
+      .help-header-version { margin-left: auto; font-size: 12px; color: #9aa5b1; }
+
+      /* ── Tabs ── */
+      .help-tabs {
+        background: #fff; border-bottom: 1px solid #d9dfe8;
+        display: flex; flex-shrink: 0;
+      }
+      .help-tab {
+        flex: 1; padding: 11px 0; font-size: 13px; font-weight: 500;
+        color: #637083; cursor: pointer; border: none; background: none;
+        border-bottom: 2px solid transparent; margin-bottom: -1px;
+        transition: color .15s, border-color .15s, background .15s;
+        font-family: inherit; text-align: center;
+      }
+      .help-tab:hover { color: #23364d; background: #f5f7f9; }
+      .help-tab.active { color: #a50034; border-bottom-color: #a50034; font-weight: 600; }
+
+      /* ── Scroll container ── */
+      .help-body {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── Tab Panels (UI Guide only) ── */
+      .help-tab-panel { display: none; flex-direction: column; }
+      .help-tab-panel.active { display: flex; }
+
+      /* ── Sections ── */
+      .help-section { padding: 16px 24px; display: flex; flex-direction: column; gap: 14px; }
+      .help-section + .help-section { border-top: 1px solid #e9edf2; }
+      .section-label {
+        font-size: 10px; font-weight: 700; color: #9aa5b1;
+        text-transform: uppercase; letter-spacing: 0.8px;
+      }
+
+      /* ══════════════════════════════════════
+         TOOLBAR MOCKUP
+      ══════════════════════════════════════ */
+      .toolbar-mockup {
+        border: 1px solid #d9dfe8;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,.07);
+        overflow: visible;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .tb-titlebar {
+        background: #f5f7f9;
+        border-bottom: 1px solid #e9edf2;
+        border-radius: 8px 8px 0 0;
+        padding: 5px 10px;
+        display: flex; align-items: center; gap: 6px;
+      }
+      .tb-logo {
+        width: 14px; height: 14px; background: #a50034; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 6px; font-weight: 700; color: #fff; flex-shrink: 0;
+      }
+      .tb-title { font-size: 9px; font-weight: 600; color: #23364d; flex: 1; }
+      .tb-pin  { font-size: 9px; color: #9aa5b1; }
+      .tb-close { font-size: 9px; color: #9aa5b1; }
+
+      .tb-row {
+        display: flex; align-items: center; gap: 5px;
+        padding: 6px 8px;
+      }
+      .tb-row + .tb-row { border-top: 1px solid #e9edf2; }
+      .tb-titlebar + .tb-row { padding-top: 12px; }
+
+      .tb-select {
+        flex: 1; min-width: 0;
+        background: #f5f7f9; border: 1px solid #d9dfe8;
+        border-radius: 5px; padding: 3px 7px;
+        font-size: 9.5px; color: #23364d;
+        height: 26px; display: flex; align-items: center;
+        white-space: nowrap; overflow: hidden;
+      }
+      .tb-select::after { content: ' ▾'; }
+
+      .tb-zoom-group {
+        display: flex; align-items: center; gap: 0;
+        background: #f5f7f9; border: 1px solid #d9dfe8;
+        border-radius: 5px; height: 26px; overflow: hidden;
+      }
+      .tb-zoom-btn {
+        width: 22px; height: 26px; display: flex; align-items: center; justify-content: center;
+        font-size: 13px; color: #23364d; border-right: 1px solid #d9dfe8;
+        font-weight: 400; flex-shrink: 0;
+      }
+      .tb-zoom-btn:last-child { border-right: none; border-left: 1px solid #d9dfe8; }
+      .tb-zoom-val {
+        padding: 0 5px; font-size: 9.5px; color: #23364d;
+        white-space: nowrap;
+      }
+
+      .tb-btn-primary {
+        background: #23364d; color: #fff; border-radius: 5px;
+        padding: 3px 10px; font-size: 9.5px; font-weight: 600;
+        height: 26px; display: flex; align-items: center;
+        white-space: nowrap; flex-shrink: 0;
+      }
+      .tb-btn-secondary {
+        background: #f5f7f9; border: 1px solid #d9dfe8; border-radius: 5px;
+        padding: 3px 8px; font-size: 9.5px; color: #23364d;
+        height: 26px; display: flex; align-items: center;
+        white-space: nowrap; flex-shrink: 0; gap: 3px;
+      }
+      .tb-help {
+        width: 24px; height: 24px; border-radius: 50%;
+        background: #e9edf2; border: 1px solid #d9dfe8;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 700; color: #637083; flex-shrink: 0;
+      }
+
+      .tb-toggle-stg {
+        background: #a50034; color: #fff; border-radius: 12px;
+        padding: 0 9px; font-size: 9.5px; font-weight: 600;
+        height: 22px; display: flex; align-items: center; gap: 4px;
+        white-space: nowrap; flex-shrink: 0;
+      }
+      .tb-toggle-live {
+        background: #23364d; color: #fff; border-radius: 12px;
+        padding: 0 9px; font-size: 9.5px; font-weight: 600;
+        height: 22px; display: flex; align-items: center; gap: 4px;
+        white-space: nowrap; flex-shrink: 0;
+      }
+      .tb-toggle-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: #fff;
+        flex-shrink: 0;
+      }
+
+      .tb-timer {
+        background: #f5f7f9; border: 1px solid #d9dfe8; border-radius: 5px;
+        padding: 3px 7px; font-size: 9.5px; color: #23364d;
+        height: 26px; display: flex; align-items: center; gap: 3px;
+        white-space: nowrap; flex-shrink: 0;
+      }
+      .tb-spacer { flex: 1; }
+      .tb-download {
+        background: #f5f7f9; border: 1px solid #d9dfe8; border-radius: 5px;
+        padding: 3px 8px; font-size: 9.5px; color: #23364d;
+        height: 26px; display: flex; align-items: center; gap: 4px;
+        white-space: nowrap; flex-shrink: 0;
+      }
+
+      /* ── Numbered badge on mockup elements ── */
+      .tb-badge { position: relative; }
+      .tb-badge::after {
+        content: attr(data-n);
+        position: absolute;
+        top: -7px; right: -7px;
+        width: 15px; height: 15px;
+        background: #a50034; color: #fff;
+        border: 1.5px solid #fff;
+        border-radius: 50%;
+        font-size: 8px; font-weight: 700;
+        line-height: 12px; text-align: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,.25);
+        z-index: 3;
+      }
+
+      /* ══════════════════════════════════════
+         2-COLUMN ANNOTATION GRID
+      ══════════════════════════════════════ */
+      .notes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 18px;
+      }
+      .wf-note { display: flex; gap: 8px; align-items: flex-start; }
+      .wf-num {
+        width: 17px; height: 17px; flex-shrink: 0;
+        background: #a50034; color: #fff;
+        border-radius: 50%; font-size: 8.5px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        margin-top: 1px;
+      }
+      .wf-note-title { font-size: 12px; font-weight: 600; color: #23364d; margin-bottom: 2px; }
+      .wf-note-desc  { font-size: 11px; color: #637083; line-height: 1.5; }
+
+      /* ── Common note ── */
+      .common-note {
+        background: #fff; border: 1px solid #e9edf2; border-radius: 8px;
+        padding: 9px 12px; display: flex; gap: 10px; align-items: flex-start;
+      }
+      .common-note-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+      .common-note-text { font-size: 12px; color: #637083; line-height: 1.55; }
+
+      /* ── QA Criteria table ── */
+      .criteria-wrap {
+        background: #fff; border: 1px solid #e9edf2;
+        border-radius: 8px; overflow: hidden;
+      }
+      .criteria-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      .criteria-table thead th {
+        background: #f5f7f9; color: #637083; font-weight: 600;
+        text-align: left; padding: 7px 10px; border-bottom: 1px solid #e9edf2;
+      }
+      .criteria-table tbody tr { border-bottom: 1px solid #f0f2f5; }
+      .criteria-table tbody tr:last-child { border-bottom: none; }
+      .criteria-table tbody tr.cat-start td { border-top: 2px solid #e9edf2; }
+      .criteria-table td { padding: 6px 10px; vertical-align: top; line-height: 1.5; }
+      .td-cat  { font-weight: 700; color: #23364d; white-space: nowrap; background: #fafbfc; }
+      .rt-badge {
+        display: inline-block; font-size: 10px; font-weight: 600;
+        padding: 1px 7px; border-radius: 8px; white-space: nowrap;
+      }
+      .rt-badge.rt-error   { background-color: #fde2e1; color: #a32a2a; }
+      .rt-badge.rt-caution { background-color: #fff4cc; color: #8a6d00; }
+      .rt-badge.rt-manual  { background-color: #e6e6e6; color: #555; }
+      .td-type { font-weight: 600; color: #a50034; white-space: nowrap; }
+      .td-desc { color: #637083; }
+      code {
+        font-family: Consolas, monospace;
+        background: #f0f2f5; padding: 1px 4px;
+        border-radius: 3px; font-size: 11px; color: #23364d;
+      }
+
+      /* ── Shared sections divider ── */
+      .shared-sections { display: flex; flex-direction: column; border-top: 2px solid #d9dfe8; }
+    </style>
+  </head>
+  <body>
+
+    <div class="help-header">
+      <span class="help-header-title">PDP QA Extension User Guide</span>
+      <span class="help-header-version">v0.9.11 · 2026-08-04</span>
+    </div>
+
+    <div class="help-tabs">
+      <button class="help-tab active">STG URL QA</button>
+      <button class="help-tab">Live URL QA</button>
+    </div>
+
+    <div class="help-body">
+
+      <!-- ══════════════════════════════════════
+           TAB 1 — STG URL QA
+      ══════════════════════════════════════ -->
+      <div class="help-tab-panel active" id="tab-panel-1">
+        <div class="help-section">
+          <div class="section-label">UI Guide</div>
+
+          <!-- ── UI Screenshot (top, centered) ── -->
+          <div style="display:flex; justify-content:center;">
+            <img src="ui-stg.png" alt="STG URL QA UI" style="max-width:100%; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.1);">
+          </div>
+
+          <!-- ── 2-Column Annotations (4 left, 3 right) ── -->
+          <div class="notes-grid">
+            <div class="wf-note">
+              <div class="wf-num">1</div>
+              <div>
+                <div class="wf-note-title">Screen Size</div>
+                <div class="wf-note-desc">Set viewport: <strong>Wide PC (1920px)</strong>, <strong>Small PC (769px)</strong>, or <strong>Mobile (450px)</strong>.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">5</div>
+              <div>
+                <div class="wf-note-title">Page Load Timer</div>
+                <div class="wf-note-desc">Wait time (sec) after page load before scanning. Increase for slow CMS preview pages.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">2</div>
+              <div>
+                <div class="wf-note-title">Zoom Controls</div>
+                <div class="wf-note-desc">Zoom the page view without changing the QA viewport or scan results.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">6</div>
+              <div>
+                <div class="wf-note-title">Fetch Delay Timer</div>
+                <div class="wf-note-desc">Min. interval (sec) between fetch requests. Smaller values speed up scan but may trigger blocking.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">3</div>
+              <div>
+                <div class="wf-note-title">Start QA</div>
+                <div class="wf-note-desc">Begin the QA scan. Page reloads and scrolls automatically to trigger lazy-loaded assets.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">7</div>
+              <div>
+                <div class="wf-note-title">Download</div>
+                <div class="wf-note-desc">Export the QA scan results as a CSV file.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">4</div>
+              <div>
+                <div class="wf-note-title">Environment Toggle — STG URL</div>
+                <div class="wf-note-desc">Currently in <strong>STG URL</strong> mode. Toggle to switch to Live URL mode.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /tab-panel-1 -->
+
+
+      <!-- ══════════════════════════════════════
+           TAB 2 — Live URL QA
+      ══════════════════════════════════════ -->
+      <div class="help-tab-panel" id="tab-panel-2">
+        <div class="help-section">
+          <div class="section-label">UI Guide</div>
+
+          <!-- ── UI Screenshot (top, centered) ── -->
+          <div style="display:flex; justify-content:center;">
+            <img src="ui-live.png" alt="Live URL QA UI" style="max-width:100%; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.1);">
+          </div>
+
+          <!-- ── 2-Column Annotations (3 left, 3 right) ── -->
+          <div class="notes-grid">
+            <div class="wf-note">
+              <div class="wf-num">1</div>
+              <div>
+                <div class="wf-note-title">Screen Size</div>
+                <div class="wf-note-desc">Set viewport: <strong>Wide PC (1920px)</strong>, <strong>Small PC (769px)</strong>, or <strong>Mobile (450px)</strong>.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">4</div>
+              <div>
+                <div class="wf-note-title">Environment Toggle — Live URL</div>
+                <div class="wf-note-desc">Currently in <strong>Live URL</strong> mode. Toggle to switch to STG URL (Preview/CMS) mode.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">2</div>
+              <div>
+                <div class="wf-note-title">Zoom Controls</div>
+                <div class="wf-note-desc">Zoom the page view without affecting the QA viewport or scan results.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">5</div>
+              <div>
+                <div class="wf-note-title">Fetch Delay Timer</div>
+                <div class="wf-note-desc">Min. interval (sec) between fetch requests. Smaller values speed up scan but may cause inaccurate results.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">3</div>
+              <div>
+                <div class="wf-note-title">Start QA</div>
+                <div class="wf-note-desc">Begin the QA scan. Page reloads and scrolls automatically to trigger lazy-loaded assets.</div>
+              </div>
+            </div>
+            <div class="wf-note">
+              <div class="wf-num">6</div>
+              <div>
+                <div class="wf-note-title">Download</div>
+                <div class="wf-note-desc">Export the QA scan results as a CSV file.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /tab-panel-2 -->
+
+
+      <!-- ══════════════════════════════════════
+           SHARED — Tips and QA Criteria
+      ══════════════════════════════════════ -->
+      <div class="shared-sections">
+
+        <div class="help-section">
+          <div class="section-label">Tips and Precautions</div>
+          <div class="common-note">
+            <div class="common-note-icon" style="background-color:#87ceeb; width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;">📝</div>
+            <div class="common-note-text">
+              <ul style="margin:0; padding-left:20px; list-style-type:disc;">
+                <li>Don't be alarmed with 'debugging' alert on top. This extension utilizes some of Chrome debugging features.</li>
+                <li>Due to the nature of crawling, the results are limited and not 100% accurate — they are affected by different ways of PDP creation.</li>
+                <li>This extension is a simple tool to assist PDP QA work by quickly identifying potential mistakes in PDPs.</li>
+                <li>In 'List' view, click 'Selector' row to highlight the corresponding element on the page. Note: not all element types produce a visible highlight.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-section">
+          <div class="section-label">QA Criteria</div>
+          <div class="criteria-wrap">
+            <table class="criteria-table">
+              <thead>
+                <tr>
+                  <th style="width:88px">Category</th>
+                  <th style="width:110px">Type</th>
+                  <th style="width:90px">Result Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="4">QA Session Info</td>
+                  <td class="td-type">QA Date</td>
+                  <td>—</td>
+                  <td class="td-desc">Date the QA scan was run.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">View Type</td>
+                  <td>—</td>
+                  <td class="td-desc">Viewport mode used for the scan (PC-1920, PC-769, or MOBILE).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Window Size</td>
+                  <td>—</td>
+                  <td class="td-desc">Emulated window/viewport size used for the scan.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Runtime</td>
+                  <td>—</td>
+                  <td class="td-desc">Total time the scan took to complete.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="8">Page Info Review</td>
+                  <td class="td-type">Site Code</td>
+                  <td>—</td>
+                  <td class="td-desc">Country/site code of the page (e.g., uk, ae).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Platform</td>
+                  <td>—</td>
+                  <td class="td-desc">CMS platform serving the page (GP1 or 5.0).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">BU</td>
+                  <td>—</td>
+                  <td class="td-desc">Business unit the page belongs to.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Category</td>
+                  <td>—</td>
+                  <td class="td-desc">Product category of the page.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Model Code</td>
+                  <td>—</td>
+                  <td class="td-desc">Model Code displayed in the page.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">MSRP</td>
+                  <td>—</td>
+                  <td class="td-desc">Price displayed in the page. Shown as <b>N/A</b> on 5.0 platform pages (no price data available).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Product ID</td>
+                  <td>—</td>
+                  <td class="td-desc">Product ID embedded in the page.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">UFN</td>
+                  <td>—</td>
+                  <td class="td-desc">User Friendly Name displayed in the page.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="4">SEO Meta Review</td>
+                  <td class="td-type">Page URL</td>
+                  <td>—</td>
+                  <td class="td-desc">Canonical URL of the page.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Page Title</td>
+                  <td>—</td>
+                  <td class="td-desc"><code>&lt;title&gt;</code> tag is missing or not properly set.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Description</td>
+                  <td>—</td>
+                  <td class="td-desc"><code>&lt;meta name="description"&gt;</code> tag is missing.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">H1</td>
+                  <td>—</td>
+                  <td class="td-desc">Page has zero or more than one <code>&lt;h1&gt;</code> element.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="9">Images</td>
+                  <td class="td-type">Broken</td>
+                  <td><span class="rt-badge rt-error">Error</span></td>
+                  <td class="td-desc">Returns HTTP 4xx/5xx or network timeout.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Alt Fail</td>
+                  <td><span class="rt-badge rt-error">Error</span></td>
+                  <td class="td-desc"><code>alt</code> is missing, empty (<code>alt=""</code>), or under 10 characters.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Oversized</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Exceeds size limit — PC: 1 MB / Mobile: 500 KB. (Shown post-scan.)</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Ext Source</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Images loaded from a non-LG external domain.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Absolute Path</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc"><code>src</code> uses an absolute URL path (<code>http/https</code>).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Duplicate</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Same <code>src</code> appears 2+ times (excluding carousel/gallery/slider images). File name shown; duplicate count per selector displayed.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Empty Path</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc"><code>src</code> is empty (placeholder). Click <strong>Check Required</strong> for manual verification.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Continued Loading</td>
+                  <td><span class="rt-badge rt-manual">Manual Check</span></td>
+                  <td class="td-desc">Image stuck in indefinite loading state.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Other Error</td>
+                  <td><span class="rt-badge rt-manual">Manual Check</span></td>
+                  <td class="td-desc">Any other image error not covered above.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="7">Videos</td>
+                  <td class="td-type">BrokenVideo</td>
+                  <td><span class="rt-badge rt-error">Error</span></td>
+                  <td class="td-desc">Returns HTTP 4xx/5xx or network timeout.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Oversized</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">File size exceeds 5 MB. (Shown post-scan.)</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Ext Source</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Video loaded from a non-LG external domain.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Absolute Path</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc"><code>src</code> uses an absolute URL.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Duplicate</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Same video appears 2+ times (excluding carousel/gallery/slider videos).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Continued Loading</td>
+                  <td><span class="rt-badge rt-manual">Manual Check</span></td>
+                  <td class="td-desc">Video clip loading abnormally or fails to load. Advise to check again later.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Other Error</td>
+                  <td><span class="rt-badge rt-manual">Manual Check</span></td>
+                  <td class="td-desc">Any other video error not covered above.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="4">CTA Links</td>
+                  <td class="td-type">Link Error</td>
+                  <td><span class="rt-badge rt-error">Error</span></td>
+                  <td class="td-desc">URL returns HTTP 4xx/5xx or destination unavailable.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Redirection</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">A 300-level redirect detected.</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Ext Source</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Links to a non-LG site (e.g., amazon.com, youtube.com).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Other Error</td>
+                  <td><span class="rt-badge rt-manual">Manual Check</span></td>
+                  <td class="td-desc">Any other CTA link error not covered above.</td>
+                </tr>
+                <tr class="cat-start">
+                  <td class="td-cat" rowspan="2">Text Issues</td>
+                  <td class="td-type">Shorten Text</td>
+                  <td><span class="rt-badge rt-error">Error</span></td>
+                  <td class="td-desc">Text contains a truncation marker (e.g., <code>...</code> or <code>…</code>).</td>
+                </tr>
+                <tr>
+                  <td class="td-type">Cautious Word</td>
+                  <td><span class="rt-badge rt-caution">Caution</span></td>
+                  <td class="td-desc">Text contains a language-specific cautious/superlative word (e.g., "best", "100%", "perfect").</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /shared-sections -->
+
+    </div><!-- /help-body -->
+
+    <script src="help.js"></script>
+  </body>
+</html>
