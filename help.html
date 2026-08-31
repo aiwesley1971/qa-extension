@@ -268,7 +268,7 @@
 
     <div class="help-header">
       <span class="help-header-title">PDP QA Extension User Guide</span>
-      <span class="help-header-version">v0.9.11 · 2026-08-04</span>
+      <span class="help-header-version">v0.9.12 · 2026-08-10</span>
     </div>
 
     <div class="help-tabs">
@@ -508,22 +508,22 @@
                   <td class="td-cat" rowspan="4">SEO Meta Review</td>
                   <td class="td-type">Page URL</td>
                   <td>—</td>
-                  <td class="td-desc">Canonical URL of the page.</td>
+                  <td class="td-desc">Actual browser tab URL at scan time (reflects the real STG or Live domain).</td>
                 </tr>
                 <tr>
                   <td class="td-type">Page Title</td>
                   <td>—</td>
-                  <td class="td-desc"><code>&lt;title&gt;</code> tag is missing or not properly set.</td>
+                  <td class="td-desc">Text of the <code>&lt;title&gt;</code> element. Flagged Missing if empty.</td>
                 </tr>
                 <tr>
                   <td class="td-type">Description</td>
                   <td>—</td>
-                  <td class="td-desc"><code>&lt;meta name="description"&gt;</code> tag is missing.</td>
+                  <td class="td-desc">Content of <code>&lt;meta name="description"&gt;</code>. Flagged Missing if empty.</td>
                 </tr>
                 <tr>
                   <td class="td-type">H1</td>
                   <td>—</td>
-                  <td class="td-desc">Page has zero or more than one <code>&lt;h1&gt;</code> element.</td>
+                  <td class="td-desc">Text of the first <code>&lt;h1&gt;</code> element (same value as UFN above). Flagged Missing if empty.</td>
                 </tr>
                 <tr class="cat-start">
                   <td class="td-cat" rowspan="9">Images</td>
@@ -559,7 +559,7 @@
                 <tr>
                   <td class="td-type">Empty Path</td>
                   <td><span class="rt-badge rt-caution">Caution</span></td>
-                  <td class="td-desc"><code>src</code> is empty (placeholder). Click <strong>Check Required</strong> for manual verification.</td>
+                  <td class="td-desc"><code>src</code> is empty (placeholder). Click <strong>Click Required</strong> to re-check the element.</td>
                 </tr>
                 <tr>
                   <td class="td-type">Continued Loading</td>
@@ -600,7 +600,7 @@
                 <tr>
                   <td class="td-type">Continued Loading</td>
                   <td><span class="rt-badge rt-manual">Manual Check</span></td>
-                  <td class="td-desc">Video clip loading abnormally or fails to load. Advise to check again later.</td>
+                  <td class="td-desc">Video clip loading abnormally or fails to load. Recommend re-checking later.</td>
                 </tr>
                 <tr>
                   <td class="td-type">Other Error</td>
@@ -616,7 +616,7 @@
                 <tr>
                   <td class="td-type">Redirection</td>
                   <td><span class="rt-badge rt-caution">Caution</span></td>
-                  <td class="td-desc">A 300-level redirect detected.</td>
+                  <td class="td-desc">A 300-level redirect detected (redirects to <code>*.lge.com</code> domains, e.g. internal auth, are excluded).</td>
                 </tr>
                 <tr>
                   <td class="td-type">Ext Source</td>
